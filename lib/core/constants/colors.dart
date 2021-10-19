@@ -11,12 +11,3 @@ const List<Color> cardColor = [
   const Color(0xFF1FAA59),
   const Color(0xFFE03B8B),
 ];
-
-// Context menu items
-class contextMenuItems {
-  static const String clear = "Clear All";
-  static const String settings = "Settings";
-  static const String about = "About";
-
-  static const List<String> choices = <String>[clear, settings, about];
-}

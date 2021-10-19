@@ -1,116 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:two_dos/screens/addNewItem.dart';
-import 'package:two_dos/widgets/listCard.dart';
-import 'constants/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
-void main(List<String> args) {
+import 'package:two_dos/core/themes/themes.dart';
+import 'package:two_dos/data/models/db/todo_db_model.dart';
+import 'package:two_dos/logic/cubit/date_picker/date_picker_cubit.dart';
+import 'package:two_dos/logic/cubit/theme_picker/theme_picker_cubit.dart';
+import 'package:two_dos/presentation/screens/home_screen/home_screen.dart';
+import 'presentation/router/app_router.dart';
+import 'core/constants/strings.dart';
+import 'presentation/screens/home_screen/widgets/progress_indicator.dart';
+
+Future<void> main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final directory = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  Hive.registerAdapter(TodoDbAdapter());
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Two-Dos",
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Colors.indigo,
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
-            backgroundColor: Colors.white,
-            elevation: 0,
-            centerTitle: true,
-            iconTheme: IconThemeData(color: Colors.indigo),
-            textTheme: TextTheme(
-                headline6: TextStyle(
-              color: Colors.indigo,
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ))),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DatePickerCubit>(create: (context) => DatePickerCubit()),
+        BlocProvider<ThemePickerCubit>(create: (context) => ThemePickerCubit()),
+      ],
+      child: MaterialApp(
+        title: Strings.appTitle,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRouter.home,
+        onGenerateRoute: AppRouter.onGenerateRoute,
       ),
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  static const List<String> choices = <String>["View", "Settings", "About"];
+class HomePage extends StatefulWidget {
+  final String title;
+  const HomePage({Key? key, required this.title}) : super(key: key);
 
-  void contextMenuAction(String choice) {
-    if (choice == contextMenuItems.clear) {
-      print("Clear button pressed");
-    } else if (choice == contextMenuItems.settings) {
-      print("Settings button pressed");
-    } else if (choice == contextMenuItems.about) {
-      print("About button pressed");
-    }
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: Hive.openBox('todo_item'),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            } else {
+              return ValueListenableBuilder(
+                  valueListenable: Hive.box('todo_item').listenable(),
+                  builder: (context, _, __) {
+                    return TodoListScreen(title: widget.title);
+                  });
+            }
+          } else {
+            return const ProgressIndiactor();
+          }
+        });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        shape: StadiumBorder(),
-        tooltip: "Add new item",
-        elevation: 10,
-        backgroundColor: Colors.indigo,
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => AddNewItem()));
-        },
-        child: Icon(
-          Icons.add,
-          size: 30,
-        ),
-      ),
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: Text("Todo List"),
-        actions: [
-          PopupMenuButton(
-              onSelected: contextMenuAction,
-              itemBuilder: (BuildContext context) {
-                return contextMenuItems.choices.map((String choice) {
-                  return PopupMenuItem<String>(
-                      value: choice, child: Text(choice));
-                }).toList();
-              }),
-        ],
-      ),
-      body: Container(
-        child:
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Center(
-            //         child: Text(
-            //       "Your todo list is empty!",
-            //       style:
-            //           TextStyle(color: Theme.of(context).primaryColor, fontSize: 20),
-            //     )),
-            //     Center(
-            //         child: Padding(
-            //       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 25),
-            //       child: Text(
-            //         "Add a new todo item by clicking the (+) button below",
-            //         textAlign: TextAlign.center,
-            //         style: TextStyle(
-            //           color: Theme.of(context).primaryColor,
-            //           fontSize: 20,
-            //         ),
-            //       ),
-            //     )),
-            //   ],
-            // )
-            ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: 10,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListCard();
-                }),
-      ),
-    );
+  void dispose() {
+    Hive.box('todo_item').close();
+    super.dispose();
   }
 }
