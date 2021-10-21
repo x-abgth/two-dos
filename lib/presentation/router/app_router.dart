@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:two_dos/presentation/screens/about_screen/about_screen.dart';
 import 'package:two_dos/presentation/screens/add_item_screen/add_item_screen.dart';
-import 'package:two_dos/presentation/screens/details_screen/details_screen.dart';
+import 'package:two_dos/presentation/screens/splash_screen/splash_screen.dart';
 
 import '../../core/constants/strings.dart';
 import '../../core/exceptions/route_exception.dart';
@@ -9,7 +10,8 @@ import '../../main.dart';
 class AppRouter {
   static const String home = 'home';
   static const String second = 'second';
-  static const String third = 'details';
+  static const String about = 'about';
+  static const String load = 'load';
 
   const AppRouter._();
 
@@ -27,12 +29,17 @@ class AppRouter {
             title: Strings.addNewItemScreenTitle,
           ),
         );
-      case third:
+      case about:
         return MaterialPageRoute(
-          builder: (_) => DetailsScreen(
-            title: Strings.addNewItemScreenTitle,
+          builder: (_) => AboutScreen(
+            title: Strings.aboutScreenTitle,
           ),
         );
+      case load:
+        return MaterialPageRoute(
+          builder: (_) => SplashScreen(),
+        );
+
       default:
         throw const RouteException('Route not found!');
     }

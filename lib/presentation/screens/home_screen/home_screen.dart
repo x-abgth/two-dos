@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:two_dos/core/constants/strings.dart';
 import 'package:two_dos/data/models/db/todo_db_model.dart';
-import 'widgets/list_card_widget.dart';
+import 'package:two_dos/presentation/screens/home_screen/widgets/delete_warnings.dart';
+import 'package:two_dos/presentation/screens/home_screen/widgets/empty_list_template.dart';
+import 'widgets/dismissible_todo_item.dart';
 import '../../../core/constants/menu_items.dart';
 
 class TodoListScreen extends StatelessWidget {
@@ -11,36 +12,22 @@ class TodoListScreen extends StatelessWidget {
 
   TodoListScreen({Key? key, required this.title}) : super(key: key);
 
-  static const List<String> choices = <String>["View", "Settings", "About"];
+  static const List<String> choices = <String>["View", "About"];
 
   final _itemsBox = Hive.box('todo_item');
-  void contextMenuAction(String choice) {
-    if (choice == ContextMenuItems.clear) {
-      Hive.box('todo_item').clear();
-    } else if (choice == ContextMenuItems.settings) {
-      print("Settings button pressed");
-    } else if (choice == ContextMenuItems.about) {
-      print("About button pressed");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    void contextMenuAction(String choice) {
+      if (choice == ContextMenuItems.clear) {
+        DeleteWarnings().confirmDeletePopUp(context: context);
+      } else if (choice == ContextMenuItems.about) {
+        Navigator.of(context).pushNamed('about');
+      }
+    }
+
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        shape: StadiumBorder(),
-        tooltip: "Add new item",
-        elevation: 10,
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          Navigator.of(context).pushNamed('second');
-        },
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).backgroundColor,
-          size: 30,
-        ),
-      ),
+      floatingActionButton: addNewItem(context),
       appBar: AppBar(
         toolbarHeight: 80,
         title: Text(title),
@@ -57,50 +44,21 @@ class TodoListScreen extends StatelessWidget {
       ),
       body: Container(
         child: _itemsBox.length < 1
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                      child: Text(
-                    "Your todo list is empty!",
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor, fontSize: 20),
-                  )),
-                  Center(
-                      child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 25),
-                    child: Text(
-                      Strings.homeScreenEmptyMsg,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 20,
-                      ),
-                    ),
-                  )),
-                ],
-              )
+            ? EmptyListTemplate()
             : ReorderableListView.builder(
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) {
                   final _item = _itemsBox.getAt(index) as TodoDb;
 
-                  return Dismissible(
-                    key: ValueKey(_item),
-                    onDismissed: (direction) {
-                      _itemsBox.deleteAt(index);
-                    },
-                    child: ListCard(
-                      index: index,
-                      item: _item,
-                    ),
+                  return DismissibleTodoItem(
+                    key: ValueKey<TodoDb>(_item),
+                    item: _item,
+                    itemsBox: _itemsBox,
+                    index: index,
                   );
                 },
                 itemCount: _itemsBox.length,
                 onReorder: (int oldIndex, int newIndex) {
-                  // final _item = _itemsBox.getAt(oldIndex);
                   if (oldIndex < newIndex) {
                     newIndex -= 1;
                   }
@@ -112,6 +70,23 @@ class TodoListScreen extends StatelessWidget {
                   _itemsBox.putAt(oldIndex, newItem);
                   _itemsBox.putAt(newIndex, oldItem);
                 }),
+      ),
+    );
+  }
+
+  FloatingActionButton addNewItem(BuildContext context) {
+    return FloatingActionButton(
+      shape: StadiumBorder(),
+      tooltip: "Add new item",
+      elevation: 10,
+      backgroundColor: Theme.of(context).primaryColor,
+      onPressed: () {
+        Navigator.of(context).pushNamed('second');
+      },
+      child: Icon(
+        Icons.add,
+        color: Theme.of(context).backgroundColor,
+        size: 30,
       ),
     );
   }

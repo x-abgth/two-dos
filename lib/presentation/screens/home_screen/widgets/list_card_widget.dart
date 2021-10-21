@@ -15,7 +15,8 @@ class ListCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: Colors.transparent,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Material(
         elevation: 10,
@@ -25,7 +26,7 @@ class ListCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           splashColor: Colors.redAccent.withOpacity(0.5),
           onTap: () {
-            context.read<DatePickerCubit>().pickDate("");
+            context.read<DatePickerCubit>().pickDate(date: "");
             context.read<ThemePickerCubit>().seclectColor(-1);
             showModalBottomSheet(
                 isScrollControlled: true,
@@ -85,12 +86,15 @@ class ListCard extends StatelessWidget {
                     Spacer(),
                     Row(
                       children: [
-                        Icon(
-                          Icons.alarm,
-                          color:
-                              item.themeIndex < 0 ? Colors.black : Colors.white,
-                          size: 16,
-                        ),
+                        item.date != ""
+                            ? Icon(
+                                Icons.alarm,
+                                color: item.themeIndex < 0
+                                    ? Colors.black
+                                    : Colors.white,
+                                size: 16,
+                              )
+                            : SizedBox(),
                         SizedBox(width: 10),
                         Text(
                           item.date,

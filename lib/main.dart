@@ -1,8 +1,10 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:sizer/sizer.dart';
 
 import 'package:two_dos/core/themes/themes.dart';
 import 'package:two_dos/data/models/db/todo_db_model.dart';
@@ -18,7 +20,9 @@ Future<void> main(List<String> args) async {
   final directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(TodoDbAdapter());
-  runApp(MyApp());
+  runApp(DevicePreview(builder: (context) {
+    return MyApp();
+  }));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,13 +33,16 @@ class MyApp extends StatelessWidget {
         BlocProvider<DatePickerCubit>(create: (context) => DatePickerCubit()),
         BlocProvider<ThemePickerCubit>(create: (context) => ThemePickerCubit()),
       ],
-      child: MaterialApp(
-        title: Strings.appTitle,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        debugShowCheckedModeBanner: false,
-        initialRoute: AppRouter.home,
-        onGenerateRoute: AppRouter.onGenerateRoute,
+      child: Sizer(
+        builder: (context, orientation, deviceType) => MaterialApp(
+          builder: DevicePreview.appBuilder,
+          title: Strings.appTitle,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          debugShowCheckedModeBanner: false,
+          initialRoute: AppRouter.load,
+          onGenerateRoute: AppRouter.onGenerateRoute,
+        ),
       ),
     );
   }
@@ -77,3 +84,5 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 }
+
+// TODO: Make the application responsive and then test the application

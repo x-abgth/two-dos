@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class ColorCircle extends StatelessWidget {
   final Color color;
@@ -8,8 +9,8 @@ class ColorCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
-      width: 40,
+      height: SizerUtil.deviceType == DeviceType.tablet ? 5.h : 10.w,
+      width: SizerUtil.deviceType == DeviceType.tablet ? 5.h : 10.w,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(

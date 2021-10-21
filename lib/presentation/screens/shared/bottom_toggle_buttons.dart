@@ -1,6 +1,8 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:two_dos/logic/cubit/date_picker/date_picker_cubit.dart';
 import 'package:two_dos/logic/cubit/theme_picker/theme_picker_cubit.dart';
 import 'package:two_dos/presentation/screens/shared/color_circle.dart';
@@ -19,9 +21,9 @@ class _BottomToggleButtonsState extends State<BottomToggleButtons> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).backgroundColor,
-      width: MediaQuery.of(context).size.width,
-      height: 100,
+      width: 90.w,
+      height: 10.0.h,
+      color: Colors.green,
       alignment: Alignment.center,
       child: ToggleButtons(
         color: Colors.grey,
@@ -29,20 +31,26 @@ class _BottomToggleButtonsState extends State<BottomToggleButtons> {
         borderRadius: BorderRadius.circular(10),
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(3.h),
             child: Row(
               children: [
-                Icon(Icons.date_range_outlined),
-                Text("Add due date"),
+                Icon(
+                  Icons.date_range_outlined,
+                  size: 3.h,
+                ),
+                Text("Add due date", style: TextStyle(fontSize: 12.sp)),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(3.h),
             child: Row(
               children: [
-                Icon(Icons.colorize_outlined),
-                Text("Add theme"),
+                Icon(
+                  Icons.colorize_outlined,
+                  size: 3.h,
+                ),
+                Text("Add theme", style: TextStyle(fontSize: 12.sp)),
               ],
             ),
           ),
@@ -54,7 +62,7 @@ class _BottomToggleButtonsState extends State<BottomToggleButtons> {
           if (index == 0 && _isSelected[index] == true) {
             return _datePicker(context: context);
           } else if (index == 0 && _isSelected[index] == false) {
-            context.read<DatePickerCubit>().pickDate("");
+            context.read<DatePickerCubit>().pickDate(date: "");
           } else if (index == 1 && _isSelected[index] == true) {
             return openThemeBox();
           } else if (index == 1 && _isSelected[index] == false) {
@@ -95,12 +103,12 @@ class _BottomToggleButtonsState extends State<BottomToggleButtons> {
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = formatDate(picked, [dd, '/', mm, '/', yyyy]);
-        context.read<DatePickerCubit>().pickDate(_selectedDate);
+        context.read<DatePickerCubit>().pickDate(date: _selectedDate);
       });
     } else if (picked == null) {
       setState(() {
         _isSelected[0] = false;
-        context.read<DatePickerCubit>().pickDate("");
+        context.read<DatePickerCubit>().pickDate(date: "");
       });
     }
   }
@@ -113,64 +121,56 @@ class _BottomToggleButtonsState extends State<BottomToggleButtons> {
       builder: (context) => AlertDialog(
         title: Text(
           "Select a theme",
+          style: TextStyle(fontSize: 10.sp),
         ),
         content: Container(
-          width: MediaQuery.of(context).size.width,
+          width: 50.h,
           child: Wrap(
             children: [
               for (int i = 0; i < 8; i++)
                 GestureDetector(
-                  onTap: () {
-                    context.read<ThemePickerCubit>().seclectColor(i);
-                  },
-                  child: context
-                              .watch<ThemePickerCubit>()
-                              .state
-                              .selectedThemeIndex >=
-                          0
-                      ? ColorCircle(
-                          color: cardColor[i],
-                          isSelected: context
-                                      .watch<ThemePickerCubit>()
-                                      .state
-                                      .selectedThemeIndex ==
-                                  i
-                              ? true
-                              : false,
-                        )
-                      : ColorCircle(
-                          color: cardColor[i],
-                          isSelected: context
-                                      .watch<ThemePickerCubit>()
-                                      .state
-                                      .selectedThemeIndex ==
-                                  i
-                              ? true
-                              : false,
-                        ),
-                ),
+                    onTap: () {
+                      context.read<ThemePickerCubit>().seclectColor(i);
+                    },
+                    child: ColorCircle(
+                      color: cardColor[i],
+                      isSelected: context
+                                  .watch<ThemePickerCubit>()
+                                  .state
+                                  .selectedThemeIndex ==
+                              i
+                          ? true
+                          : false,
+                    )),
             ],
           ),
         ),
         actions: [
-          TextButton(
-              onPressed: () {
-                if (context.read<ThemePickerCubit>().state.selectedThemeIndex ==
-                    -1) {
-                  setState(() {
-                    _isSelected[1] = false;
-                  });
-                }
-                Navigator.pop(context);
-              },
-              child: Text(
-                "OK",
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ))
+          Padding(
+            padding: SizerUtil.deviceType == DeviceType.tablet
+                ? EdgeInsets.all(1.5.h)
+                : const EdgeInsets.all(0),
+            child: TextButton(
+                onPressed: () {
+                  if (context
+                          .read<ThemePickerCubit>()
+                          .state
+                          .selectedThemeIndex ==
+                      -1) {
+                    setState(() {
+                      _isSelected[1] = false;
+                    });
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 10.sp),
+                )),
+          )
         ],
       ),
     );
   }
 }
-
-// TODO: use hive database to store datas

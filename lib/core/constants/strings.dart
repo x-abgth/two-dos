@@ -11,4 +11,7 @@ class Strings {
 
   // Add new item screen
   static final addNewItemScreenTitle = 'Add a todo';
+
+  // About screen
+  static final aboutScreenTitle = 'About';
 }

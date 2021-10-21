@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:two_dos/data/models/db/todo_db_model.dart';
 import 'package:two_dos/logic/cubit/date_picker/date_picker_cubit.dart';
 import 'package:two_dos/logic/cubit/theme_picker/theme_picker_cubit.dart';
@@ -24,12 +26,11 @@ class AddItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
-      height: size.height - 250,
+      color: Colors.red,
+      height: 60.0.h,
       padding: EdgeInsets.all(10),
-      child: ListView(
-        physics: BouncingScrollPhysics(),
+      child: Column(
         children: [
           buildTextField(
             label: "Title",
@@ -49,7 +50,7 @@ class AddItemDetails extends StatelessWidget {
                   "Due date : ",
                   style: TextStyle(
                     color: Colors.indigo,
-                    fontSize: 16,
+                    fontSize: 14.sp,
                   ),
                 ),
                 Spacer(),
@@ -60,7 +61,7 @@ class AddItemDetails extends StatelessWidget {
                           datePickerCubit.state.date.toString()),
                   style: TextStyle(
                     color: Colors.grey,
-                    fontSize: 16,
+                    fontSize: 13.sp,
                   ),
                 ),
               ],
@@ -82,7 +83,9 @@ class AddItemDetails extends StatelessWidget {
       cursorHeight: 22,
       maxLines: lines,
       style: TextStyle(
-          fontWeight: lines == 2 ? FontWeight.bold : FontWeight.normal),
+        fontWeight: lines == 2 ? FontWeight.bold : FontWeight.normal,
+        fontSize: 14.sp,
+      ),
       inputFormatters: [LengthLimitingTextInputFormatter(words)],
       decoration: InputDecoration(
         hintText: label,
@@ -99,7 +102,7 @@ class AddItemDetails extends StatelessWidget {
       if (context.select((DatePickerCubit datePickerCubit) =>
               datePickerCubit.state.date.toString()) ==
           "") {
-        context.read<DatePickerCubit>().pickDate(_item.date);
+        context.read<DatePickerCubit>().pickDate(date: _item.date);
         context.read<ThemePickerCubit>().seclectColor(_item.themeIndex);
       }
 

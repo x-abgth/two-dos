@@ -16,9 +16,10 @@ class TodoDb {
   @HiveField(3)
   final int themeIndex;
 
-  TodoDb(
-      {this.title = "",
-      this.subject = "",
-      this.date = "",
-      this.themeIndex = -1});
+  TodoDb({
+    this.title = "",
+    this.subject = "",
+    this.date = "",
+    this.themeIndex = -(1),
+  });
 }

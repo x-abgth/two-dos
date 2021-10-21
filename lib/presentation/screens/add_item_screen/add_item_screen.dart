@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
 
 import 'package:two_dos/data/models/db/todo_db_model.dart';
 import 'package:two_dos/logic/cubit/date_picker/date_picker_cubit.dart';
@@ -22,27 +23,33 @@ class _AddNewItemState extends State<AddNewItem> {
 
   @override
   void initState() {
-    context.read<DatePickerCubit>().pickDate("");
+    context.read<DatePickerCubit>().pickDate(date: "");
     context.read<ThemePickerCubit>().seclectColor(-1);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBarWidget(context),
-      body: Stack(
-        children: [
-          AddItemDetails(
-            titleController: titleFieldController,
-            subjectController: subjectFieldController,
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: BottomToggleButtons(),
-          )
-        ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: _appBarWidget(context),
+        body: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              child: AddItemDetails(
+                titleController: titleFieldController,
+                subjectController: subjectFieldController,
+              ),
+            ),
+            Positioned(
+              bottom: 0.h,
+              left: 0,
+              child: Center(child: BottomToggleButtons()),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -63,14 +70,16 @@ class _AddNewItemState extends State<AddNewItem> {
       actions: [
         TextButton(
             onPressed: () {
-              final newItem = TodoDb(
-                title: titleFieldController.text,
-                subject: subjectFieldController.text,
-                date: context.read<DatePickerCubit>().state.date.toString(),
-                themeIndex:
-                    context.read<ThemePickerCubit>().state.selectedThemeIndex,
-              );
-              addItem(newItem);
+              if (titleFieldController.text != "") {
+                final newItem = TodoDb(
+                  title: titleFieldController.text,
+                  subject: subjectFieldController.text,
+                  date: context.read<DatePickerCubit>().state.date.toString(),
+                  themeIndex:
+                      context.read<ThemePickerCubit>().state.selectedThemeIndex,
+                );
+                addItem(newItem);
+              }
               Navigator.of(context).pop();
             },
             child: Text(
