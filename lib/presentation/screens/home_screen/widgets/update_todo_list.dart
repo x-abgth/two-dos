@@ -43,15 +43,19 @@ class _UpdateTodoListState extends State<UpdateTodoList> {
       direction: Axis.vertical,
       children: [
         Container(
-          height: 95.0.h,
-          width: 100.0.w,
+          height:
+              SizerUtil.orientation == Orientation.landscape ? 95.0.w : 95.0.h,
+          width: SizerUtil.orientation == Orientation.landscape
+              ? 100.0.h
+              : 100.0.w,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           ),
-          child: Column(
+          child: ListView(
+            physics: BouncingScrollPhysics(),
             children: [
               Row(
                 children: [
@@ -60,9 +64,11 @@ class _UpdateTodoListState extends State<UpdateTodoList> {
                     child: Text(
                       "Cancel",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: item.themeIndex < 0
-                              ? Theme.of(context).primaryColor
-                              : cardColor[item.themeIndex]),
+                            color: item.themeIndex < 0
+                                ? Theme.of(context).primaryColor
+                                : cardColor[item.themeIndex],
+                            fontSize: 13.sp,
+                          ),
                     ),
                   ),
                   Spacer(),
@@ -89,9 +95,11 @@ class _UpdateTodoListState extends State<UpdateTodoList> {
                     child: Text(
                       "Done",
                       style: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: item.themeIndex < 0
-                              ? Theme.of(context).primaryColor
-                              : cardColor[item.themeIndex]),
+                            color: item.themeIndex < 0
+                                ? Theme.of(context).primaryColor
+                                : cardColor[item.themeIndex],
+                            fontSize: 13.sp,
+                          ),
                     ),
                   )
                 ],
@@ -102,6 +110,10 @@ class _UpdateTodoListState extends State<UpdateTodoList> {
                 isUpdating: true,
                 index: index,
               ),
+              SizedBox(
+                  height: SizerUtil.orientation == Orientation.landscape
+                      ? 7.0.w
+                      : 7.0.w),
               BottomToggleButtons(),
             ],
           ),

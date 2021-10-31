@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:two_dos/data/models/db/todo_db_model.dart';
 import 'package:two_dos/presentation/screens/home_screen/widgets/delete_warnings.dart';
 import 'package:two_dos/presentation/screens/home_screen/widgets/empty_list_template.dart';
@@ -29,10 +31,15 @@ class TodoListScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: addNewItem(context),
       appBar: AppBar(
-        toolbarHeight: 80,
-        title: Text(title),
+        toolbarHeight: 10.h,
+        title: Text(
+          title,
+          style: TextStyle(
+              fontSize: 20.sp, color: Theme.of(context).backgroundColor),
+        ),
         actions: [
           PopupMenuButton(
+              iconSize: 4.h,
               onSelected: contextMenuAction,
               itemBuilder: (BuildContext context) {
                 return ContextMenuItems.choices.map((String choice) {
@@ -74,19 +81,22 @@ class TodoListScreen extends StatelessWidget {
     );
   }
 
-  FloatingActionButton addNewItem(BuildContext context) {
-    return FloatingActionButton(
-      shape: StadiumBorder(),
-      tooltip: "Add new item",
-      elevation: 10,
-      backgroundColor: Theme.of(context).primaryColor,
-      onPressed: () {
-        Navigator.of(context).pushNamed('second');
-      },
-      child: Icon(
-        Icons.add,
-        color: Theme.of(context).backgroundColor,
-        size: 30,
+  Widget addNewItem(BuildContext context) {
+    return Container(
+      width: 8.h,
+      height: 8.h,
+      child: RawMaterialButton(
+        fillColor: Theme.of(context).primaryColor,
+        shape: CircleBorder(),
+        elevation: 10.0,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).backgroundColor,
+          size: 4.h,
+        ),
+        onPressed: () {
+          Navigator.of(context).pushNamed('second');
+        },
       ),
     );
   }

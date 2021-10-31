@@ -27,7 +27,7 @@ class AddItemDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      width: SizerUtil.orientation == Orientation.landscape ? 100.0.h : 100.0.w,
       height: 60.0.h,
       padding: EdgeInsets.all(10),
       child: Column(

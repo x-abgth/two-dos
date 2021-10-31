@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Developernfo extends StatefulWidget {
@@ -24,17 +25,22 @@ class _DevelopernfoState extends State<Developernfo> {
             width: double.infinity,
             child: Text(
               "About the developer",
-              style: Theme.of(context).textTheme.headline6!.copyWith(),
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    fontSize: SizerUtil.deviceType == DeviceType.tablet
+                        ? 10.sp
+                        : 18.sp,
+                  ),
             ),
           ),
           SizedBox(height: 10),
           Center(
             child: Text(
               "Do support 👍",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1!
-                  .copyWith(fontSize: 16, fontWeight: FontWeight.normal),
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  fontSize: SizerUtil.deviceType == DeviceType.tablet
+                      ? 7.5.sp
+                      : 13.sp,
+                  fontWeight: FontWeight.normal),
               textAlign: TextAlign.justify,
             ),
           ),
@@ -69,13 +75,15 @@ class _DevelopernfoState extends State<Developernfo> {
           text: normalText,
           style: TextStyle(
             color: Colors.black,
-            fontSize: 16,
+            fontSize:
+                SizerUtil.deviceType == DeviceType.tablet ? 7.5.sp : 13.sp,
           ),
         ),
         TextSpan(
             text: linkName,
             style: TextStyle(
-              fontSize: 16,
+              fontSize:
+                  SizerUtil.deviceType == DeviceType.tablet ? 7.5.sp : 13.sp,
               color: Colors.blue,
               decoration: TextDecoration.underline,
             ),

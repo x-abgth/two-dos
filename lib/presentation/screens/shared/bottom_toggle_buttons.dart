@@ -21,9 +21,8 @@ class _BottomToggleButtonsState extends State<BottomToggleButtons> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 90.w,
+      width: SizerUtil.orientation == Orientation.landscape ? 60.0.h : 90.w,
       height: 10.0.h,
-      color: Colors.green,
       alignment: Alignment.center,
       child: ToggleButtons(
         color: Colors.grey,

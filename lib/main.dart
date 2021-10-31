@@ -1,28 +1,33 @@
-import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:sizer/sizer.dart';
 
+import 'core/constants/strings.dart';
+import 'presentation/router/app_router.dart';
 import 'package:two_dos/core/themes/themes.dart';
 import 'package:two_dos/data/models/db/todo_db_model.dart';
 import 'package:two_dos/logic/cubit/date_picker/date_picker_cubit.dart';
+import 'presentation/screens/home_screen/widgets/progress_indicator.dart';
 import 'package:two_dos/logic/cubit/theme_picker/theme_picker_cubit.dart';
 import 'package:two_dos/presentation/screens/home_screen/home_screen.dart';
-import 'presentation/router/app_router.dart';
-import 'core/constants/strings.dart';
-import 'presentation/screens/home_screen/widgets/progress_indicator.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   final directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(TodoDbAdapter());
-  runApp(DevicePreview(builder: (context) {
-    return MyApp();
-  }));
+
+  // fonts license
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('assets/google_fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -35,7 +40,6 @@ class MyApp extends StatelessWidget {
       ],
       child: Sizer(
         builder: (context, orientation, deviceType) => MaterialApp(
-          builder: DevicePreview.appBuilder,
           title: Strings.appTitle,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
@@ -85,4 +89,4 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// TODO: Make the application responsive and then test the application
+// TODO: App icon and testing

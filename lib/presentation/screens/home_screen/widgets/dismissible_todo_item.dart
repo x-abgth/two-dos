@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:two_dos/data/models/db/todo_db_model.dart';
 import 'package:two_dos/presentation/screens/home_screen/widgets/delete_warnings.dart';
 
@@ -35,11 +37,11 @@ class DismissibleTodoItem extends StatelessWidget {
         alignment: AlignmentDirectional.centerEnd,
         color: Colors.transparent,
         child: Padding(
-          padding: EdgeInsets.only(right: 20.0),
+          padding: EdgeInsets.only(right: 10.w),
           child: Icon(
             Icons.delete,
             color: Color(0xFFF44336),
-            size: 35,
+            size: 5.h,
           ),
         ),
       ),

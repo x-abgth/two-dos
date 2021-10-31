@@ -12,7 +12,8 @@ class ColorCircle extends StatelessWidget {
       height: SizerUtil.deviceType == DeviceType.tablet ? 5.h : 10.w,
       width: SizerUtil.deviceType == DeviceType.tablet ? 5.h : 10.w,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      padding: EdgeInsets.all(4),
+      padding: EdgeInsets.all(
+          SizerUtil.deviceType == DeviceType.tablet ? 1.w : 0.6.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: isSelected ? Colors.grey.shade400 : Colors.transparent,

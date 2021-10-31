@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:two_dos/presentation/screens/about_screen/widgets/developer_info.dart';
 import 'package:two_dos/presentation/screens/about_screen/widgets/todoApp_info.dart';
 
@@ -10,14 +11,18 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
-        toolbarHeight: 80,
+        title: Text(
+          title,
+          style: TextStyle(
+              fontSize: 20.sp, color: Theme.of(context).backgroundColor),
+        ),
+        toolbarHeight: 10.h,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
           icon: Icon(Icons.chevron_left,
-              size: 30, color: Theme.of(context).backgroundColor),
+              size: 4.h, color: Theme.of(context).backgroundColor),
         ),
       ),
       body: Column(

@@ -1,5 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:two_dos/presentation/screens/splash_screen/widgets/title_underline_animation.dart';
 
@@ -16,8 +18,8 @@ class SplashScreenTitle extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 50,
-                  height: 50,
+                  width: 10.w,
+                  height: 10.w,
                   child: FlareActor(
                     'assets/flare/circle_check.flr',
                     animation: 'Untitled',
@@ -29,12 +31,12 @@ class SplashScreenTitle extends StatelessWidget {
                   style: GoogleFonts.dancingScript(
                     color: Theme.of(context).backgroundColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 45,
+                    fontSize: 40.sp,
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 0.5.h),
             TitleUnderlineAnimation(),
           ],
         ),

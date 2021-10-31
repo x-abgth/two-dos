@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:two_dos/core/constants/strings.dart';
 
 class EmptyListTemplate extends StatelessWidget {
@@ -13,7 +14,11 @@ class EmptyListTemplate extends StatelessWidget {
         Center(
             child: Text(
           "Your todo list is empty!",
-          style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20),
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize:
+                SizerUtil.orientation == Orientation.landscape ? 20.sp : 15.sp,
+          ),
         )),
         Center(
             child: Padding(
@@ -23,7 +28,9 @@ class EmptyListTemplate extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
-              fontSize: 20,
+              fontSize: SizerUtil.orientation == Orientation.landscape
+                  ? 20.sp
+                  : 15.sp,
             ),
           ),
         )),

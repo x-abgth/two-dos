@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class TitleUnderlineAnimation extends StatefulWidget {
   const TitleUnderlineAnimation({Key? key}) : super(key: key);
@@ -14,14 +15,15 @@ class _TitleUnderlineAnimationState extends State<TitleUnderlineAnimation> {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = SizerUtil.orientation == Orientation.portrait;
     return BounceInLeft(
       controller: (controller) => animationController = controller,
       manualTrigger: true,
       child: Divider(
         thickness: 2,
         color: Theme.of(context).backgroundColor,
-        indent: 100,
-        endIndent: 100,
+        indent: orientation ? 20.w : 30.h,
+        endIndent: orientation ? 20.w : 30.h,
       ),
     );
   }

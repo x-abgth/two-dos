@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class DeveloperSign extends StatelessWidget {
   const DeveloperSign({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class DeveloperSign extends StatelessWidget {
         "ABGTH",
         style: TextStyle(
           color: Theme.of(context).backgroundColor.withOpacity(0.2),
-          fontSize: 18,
+          fontSize: SizerUtil.deviceType == DeviceType.tablet ? 11.sp : 15.sp,
         ),
       ),
     );

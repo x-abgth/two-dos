@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class TodoAppInfo extends StatelessWidget {
   const TodoAppInfo({Key? key}) : super(key: key);
@@ -12,7 +13,9 @@ class TodoAppInfo extends StatelessWidget {
         children: [
           Text(
             "What is a TODO app ?",
-            style: Theme.of(context).textTheme.headline6!.copyWith(),
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                fontSize:
+                    SizerUtil.deviceType == DeviceType.tablet ? 10.sp : 18.sp),
           ),
           SizedBox(height: 10),
           Text(
@@ -21,10 +24,10 @@ class TodoAppInfo extends StatelessWidget {
               
 A todo app is like starter application that most developers do in their beginner levels.
              ''',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                .copyWith(fontSize: 15, fontWeight: FontWeight.normal),
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                fontSize:
+                    SizerUtil.deviceType == DeviceType.tablet ? 7.5.sp : 13.sp,
+                fontWeight: FontWeight.normal),
             textAlign: TextAlign.justify,
           ),
         ],
