@@ -1,16 +1,28 @@
-# two_dos
+# Two-Dos
+This application is a simple to-do application which is fully responsive to any device model and ready to be published. The application is completely built on Flutter framework but since the inavailability of mac-book, the application is not configured for iOS platform.
+<br><br>
 
-A new Flutter project.
+## 📅 Database
+The backend of this apllication is built on Hive databse. Hive is a lightweight, noSQL database.
 
-## Getting Started
+## 📱 Screenshots
+<img src="assets/ui_designs/empty_home_page.png" alt="Two dos home page" width="200"/>&ensp;&ensp;
+<img src="assets/ui_designs/home_page.png" alt="Two dos home page" width="200"/>&ensp;&ensp;
+<img src="assets/ui_designs/create_page.png" alt="Two dos create page" width="200"/>&ensp;&ensp;
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 💻 Test application on your machine
+Open CMD from where you want to clone the project & run the following commands:
+```
+  git clone https://github.com/x-abgth/two-dos.git
+```
+```
+  cd two-dos
+ ```
+ ```
+  flutter packages get
+ ```
+ ```
+  flutter run
+```
+## ❤ Conclusion
+🌟 Star this repo & follow for more 😊
